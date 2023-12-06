@@ -3,7 +3,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-const TEMP_DIR: &str = "/tmp/garfield";
+pub const TEMP_DIR: &str = "/tmp/garfield";
 const ATTEMPTS: u32 = 10;
 const TIMEOUT: u32 = 10;
 
@@ -25,7 +25,6 @@ impl Everygarf {
     pub fn execute(self) -> Option<Duration> {
         let mut command = Command::new("everygarf");
         command.arg(TEMP_DIR);
-        command.arg("--remove-all");
         command.arg("--notify-fail");
         command.args(["--attempts", &ATTEMPTS.to_string()]);
         command.args(["--timeout", &TIMEOUT.to_string()]);
@@ -37,6 +36,7 @@ impl Everygarf {
 
         let start_time = Instant::now();
         let output = command.output().expect("Failed to run command");
+        let elapsed_time = start_time.elapsed();
 
         if !output.status.success() {
             eprintln!("Failed with code {}", output.status);
@@ -44,7 +44,6 @@ impl Everygarf {
             return None;
         }
 
-        let elapsed_time = start_time.elapsed();
         Some(elapsed_time)
     }
 }
