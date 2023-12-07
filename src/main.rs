@@ -25,12 +25,13 @@ fn main() {
 fn run(filepath: &Path, cache: bool) {
     let images_values = [1, 2, 3, 5, 10, 20, 30, 50, 100, 200, 300, 500, 1_000];
     let jobs_values = [
-        // 1, 2, 3, 4,
-        5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
         30, 35, 40, 45, 50,
     ];
 
-    fs::remove_dir_all(TEMP_DIR).expect("Failed to remove temp image output directory");
+    if Path::new(TEMP_DIR).exists() {
+        fs::remove_dir_all(TEMP_DIR).expect("Failed to remove temp image output directory");
+    }
 
     let mut file = fs::OpenOptions::new()
         .create(true)
